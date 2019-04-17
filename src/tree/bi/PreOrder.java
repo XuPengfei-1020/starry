@@ -96,7 +96,6 @@ public class PreOrder {
 
             if (frame.index == 1) {
                 System.out.print(frame.node + ", ");
-                stack.push(new Frame(frame.node.left, 0));
                 continue;
             }
 

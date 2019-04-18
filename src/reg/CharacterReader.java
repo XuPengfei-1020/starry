@@ -95,7 +95,7 @@ public class CharacterReader {
     }
 
     /**
-     * remove blank letter from string.
+     * remove blank expression from string.
      */
     private String compress(String s) {
         // may be need a array to record map of index of each  character in old String and new String.

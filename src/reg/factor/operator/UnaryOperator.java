@@ -73,7 +73,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return "{" + n + ", " + (m == Integer.MAX_VALUE ? "unlimit" : m ) + "}";
         }
     }
@@ -89,7 +89,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return "*";
         }
     }
@@ -105,7 +105,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return "+";
         }
     }
@@ -121,7 +121,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return "?";
         }
     }

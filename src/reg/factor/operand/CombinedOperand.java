@@ -68,12 +68,12 @@ public class CombinedOperand implements Operand {
     }
 
     @Override
-    public String letter() {
-        return (leftClosure == null ? "" : leftClosure.letter()) +
-                (leftOperand == null ? "" : leftOperand.letter()) +
-                (operator == null ? "" : operator.letter()) +
-                (rightOperand == null ? "" : rightOperand.letter()) +
-                (rightClosure == null ? "" : rightClosure.letter());
+    public String expression() {
+        return (leftClosure == null ? "" : leftClosure.expression()) +
+                (leftOperand == null ? "" : leftOperand.expression()) +
+                (operator == null ? "" : operator.expression()) +
+                (rightOperand == null ? "" : rightOperand.expression()) +
+                (rightClosure == null ? "" : rightClosure.expression());
     }
 
     /**

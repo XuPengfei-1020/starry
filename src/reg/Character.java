@@ -118,7 +118,7 @@ public class Character {
     public static final short SPECIAL_CHAR_END = -400;
 
     /**
-     * Convert character to letter
+     * Convert character to expression
      */
     public static String convertToLetter(int character) {
         switch (character) {

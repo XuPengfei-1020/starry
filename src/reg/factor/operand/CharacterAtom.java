@@ -26,7 +26,7 @@ public class CharacterAtom implements Operand {
     }
 
     @Override
-    public String letter() {
+    public String expression() {
         return Character.convertToLetter(c);
     }
 

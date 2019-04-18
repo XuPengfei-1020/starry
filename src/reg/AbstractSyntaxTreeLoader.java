@@ -52,7 +52,7 @@ public class AbstractSyntaxTreeLoader {
 
             if (stack.isEmpty() || !(prev = stack.pop()).isOperand()) {
                 // syntax exception
-                throw new RuntimeException("No left operand before operator :'" + factor.letter() + "'");
+                throw new RuntimeException("No left operand before operator :'" + factor.expression() + "'");
             }
 
             Operand operand = (Operand) prev;
@@ -105,7 +105,7 @@ public class AbstractSyntaxTreeLoader {
                     return;
                 }
 
-                throw new RuntimeException("Can not found a valid corresponding symbol before:'" + factor.letter() + "'");
+                throw new RuntimeException("Can not found a valid corresponding symbol before:'" + factor.expression() + "'");
             }
 
             collapse(-1);
@@ -118,7 +118,7 @@ public class AbstractSyntaxTreeLoader {
 
             // find corresponding closure, which must be valid.
             if (stack.isEmpty()) {
-                throw new RuntimeException("Can not found a valid corresponding symbol before:'" + factor.letter() +
+                throw new RuntimeException("Can not found a valid corresponding symbol before:'" + factor.expression() +
                     "'");
             }
 
@@ -126,14 +126,14 @@ public class AbstractSyntaxTreeLoader {
 
             if (!prev.isOperand()) {
                 // syntax error
-                throw new RuntimeException("The factor before closure:'" + factor.letter() + "' is " + prev.letter());
+                throw new RuntimeException("The factor before closure:'" + factor.expression() + "' is " + prev.expression());
             }
 
             Operand operand = (Operand) prev;
 
             if (stack.isEmpty()) {
                 // syntax error
-                throw new RuntimeException("Closure : '" + closure.letter() + "' can not find corresponding symbol:'" +
+                throw new RuntimeException("Closure : '" + closure.expression() + "' can not find corresponding symbol:'" +
                     closure.corresponding() + "'");
             }
 
@@ -141,7 +141,7 @@ public class AbstractSyntaxTreeLoader {
 
             if (!closure.match(corresponding)) {
                 throw new RuntimeException("Expect a corresponding symbol:'" + closure.corresponding() + "' before '" +
-                    closure.letter() + "', but found a '" + corresponding.letter() + "', they are not a valid pair.");
+                    closure.expression() + "', but found a '" + corresponding.expression() + "', they are not a valid pair.");
             }
 
             receive(new CombinedOperand(corresponding, operand, closure));
@@ -171,7 +171,7 @@ public class AbstractSyntaxTreeLoader {
             return (Operand) factor;
         }
 
-        throw new Exception("Uncompleted operator: '" + factor.letter() + "'.");
+        throw new Exception("Uncompleted operator: '" + factor.expression() + "'.");
     }
 
     /**
@@ -250,7 +250,7 @@ public class AbstractSyntaxTreeLoader {
             fragments.push(factor);
 
             if (step.currentStep == Step.START) {
-                if (Closure.Brace.LEFT.equals(factor.letter())) {
+                if (Closure.Brace.LEFT.equals(factor.expression())) {
                     step.currentStep = Step.LEFT_BRACE;
                     return null;
                 }
@@ -258,7 +258,7 @@ public class AbstractSyntaxTreeLoader {
                 throw new RuntimeException("NumOfOccurrence operator must start with '" + Closure.Brace.LEFT + "'");
             }
 
-            if (Closure.Brace.RIGHT.equals(factor.letter())) {
+            if (Closure.Brace.RIGHT.equals(factor.expression())) {
                 if (step.currentStep != Step.TIMES_SEPARATOR && step.currentStep != Step.MAX) {
                     throw new RuntimeException("Unrecognized number of occurrence operator '" + fragments() + "'");
                 }
@@ -284,7 +284,7 @@ public class AbstractSyntaxTreeLoader {
 
                 // 0 ~ 9
                 if (character >= 48 && character <= 57) {
-                    int number = Integer.valueOf(factor.letter());
+                    int number = Integer.valueOf(factor.expression());
 
                     if (step.currentStep == Step.LEFT_BRACE) {
                         min = number;
@@ -327,7 +327,7 @@ public class AbstractSyntaxTreeLoader {
             StringBuilder result = new StringBuilder();
 
             for (Factor factor : fragments) {
-                result.insert(0, factor.letter());
+                result.insert(0, factor.expression());
             }
 
             return result.toString();

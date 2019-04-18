@@ -32,7 +32,7 @@ public abstract class BinaryOperator implements Operator {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return "。";
         }
 
@@ -53,7 +53,7 @@ public abstract class BinaryOperator implements Operator {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return "|";
         }
 

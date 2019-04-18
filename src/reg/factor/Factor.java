@@ -5,10 +5,9 @@ package reg.factor;
  */
 public interface Factor {
     /**
-     * literal， '\n' is "\\n", '\t' is "\\t"。 or is | ， star is *, and so on.
-     * @return
+     * @return expression of this factor， '\n' is "\\n", '\t' is "\\t"。 or is | ， star is *, and so on.
      */
-    String letter();
+    String expression();
 
     /**
      * @return true is factor is operator

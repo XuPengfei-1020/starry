@@ -60,7 +60,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return left() ? LEFT : RIGHT;
         }
 
@@ -85,7 +85,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return left() ? LEFT : RIGHT;
         }
 
@@ -119,7 +119,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return LEFT;
         }
 
@@ -149,7 +149,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public String letter() {
+        public String expression() {
             return left() ? LEFT : RIGHT;
         }
 

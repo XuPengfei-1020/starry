@@ -15,12 +15,12 @@ public class RegToAbstractSyntax {
 
         while (factorReader.hasNext()) {
             Factor factor = factorReader.next();
-            System.out.print(factor.letter());
+            System.out.print(factor.expression());
             loader.receive(factor);
         }
 
         //In fact, loader is a abstract syntax.
         System.out.println();
-        System.out.println(loader.rootOfAbstractSyntaxTree().letter());
+        System.out.println(loader.rootOfAbstractSyntaxTree().expression());
     }
 }

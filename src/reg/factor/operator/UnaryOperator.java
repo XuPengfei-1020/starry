@@ -74,7 +74,7 @@ public abstract class UnaryOperator implements Operator {
 
         @Override
         public String expression() {
-            return "{" + n + ", " + (m == Integer.MAX_VALUE ? "unlimit" : m ) + "}";
+            return "{" + n + ", " + (m == Integer.MAX_VALUE ? "" : m ) + "}";
         }
     }
 

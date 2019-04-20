@@ -8,8 +8,4 @@ import reg.factor.Factor;
  * @author flying
  */
 public interface Operand extends Factor {
-    @Override
-    default boolean isOperand() {
-        return true;
-    }
 }

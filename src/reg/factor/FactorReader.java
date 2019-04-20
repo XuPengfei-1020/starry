@@ -44,19 +44,19 @@ public class FactorReader {
         int character = reader.next();
 
         if (character == Character.LEFT_PARENTHESIS || character == Character.RIGHT_PARENTHESIS) {
-            return new Closure.Parenthesis(character == Character.LEFT_PARENTHESIS);
+            return character == Character.LEFT_PARENTHESIS ? Closure.LEFT_PARENTHESIS : Closure.RIGHT_PARENTHESIS;
         }
 
         if (character == Character.LEFT_BRACKET || character == Character.RIGHT_BRACKET) {
-            return new Closure.Bracket(character == Character.LEFT_BRACKET);
+            return character == Character.LEFT_BRACKET ? Closure.LEFT_BRACKET : Closure.RIGHT_BRACKET;
         }
 
         if (character == Character.LEFT_BRACE || character == Character.RIGHT_BRACE) {
-            return new Closure.Brace(character == Character.LEFT_BRACE);
+            return character == Character.LEFT_BRACE ? Closure.LEFT_BRACE : Closure.RIGHT_BRACE;
         }
 
         if (character == Character.ANTI_GROUP_START) {
-            return new Closure.AntiBracket();
+            return Closure.ANTI_BRACKET;
         }
 
         if (character == Character.AT_LAST_ONCE) {

@@ -1,6 +1,7 @@
 package reg;
 
 import reg.factor.Factor;
+import reg.factor.FactorTypeRegister;
 import reg.factor.closure.Closure;
 import reg.factor.operand.CharacterAtom;
 import reg.factor.operand.CombinedOperand;
@@ -53,17 +54,17 @@ public class AbstractSyntaxTreeLoader {
             return;
         }
 
-        if (factor.isOperator()) {
+        if (FactorTypeRegister.isOperator(factor)) {
             receiveOperator((Operator) factor);
             return;
         }
 
-        if (factor.isOperand()) {
+        if (FactorTypeRegister.isOperand(factor)) {
             receiveOperand((Operand) factor);
             return;
         }
 
-        if (factor.isClosure()) {
+        if (FactorTypeRegister.isClosure(factor)) {
             receiveClosure((Closure) factor);
             return;
         }
@@ -91,7 +92,7 @@ public class AbstractSyntaxTreeLoader {
         collapse(-1);
         Factor factor = stack.peek();
 
-        if (factor.isOperand()) {
+        if (FactorTypeRegister.isOperand(factor)) {
             return (Operand) factor;
         }
 
@@ -104,7 +105,7 @@ public class AbstractSyntaxTreeLoader {
     private void receiveOperator(Operator operator) throws Exception {
         Factor prev;
 
-        if (stack.isEmpty() || !(prev = stack.pop()).isOperand()) {
+        if (stack.isEmpty() || !FactorTypeRegister.isOperand(prev = stack.pop())) {
             // syntax exception
             throw new RuntimeException("no left operand before operator :'" + operator.expression() + "'");
         }
@@ -135,12 +136,12 @@ public class AbstractSyntaxTreeLoader {
 
         Factor prev = stack.peek();
 
-        if (prev.isClosure() || prev.isOperator()) {
+        if (FactorTypeRegister.isClosure(prev) || FactorTypeRegister.isOperator(prev)) {
             stack.push(operand);
             return;
         }
 
-        if (prev.isOperand()) {
+        if (FactorTypeRegister.isOperand(prev)) {
             // connect prev and factor with a connection operator.
             receive(BinaryOperator.CONNECT);
             stack.push(operand);
@@ -153,7 +154,9 @@ public class AbstractSyntaxTreeLoader {
 
     private void receiveClosure(Closure closure) throws Exception {
         // if closure is bracket('[', '[^' or ']'), treat it as segment of a number of occurrence operator.
-        if (closure instanceof Closure.Bracket || closure instanceof Closure.AntiBracket) {
+        if (FactorTypeRegister.instanceOf(closure.type(), FactorTypeRegister.BRACKET_MASK) ||
+            FactorTypeRegister.instanceOf(closure.type(), FactorTypeRegister.ANTI_BRACKET_MASK))
+        {
             if (!closure.left()) {
                 throw new RuntimeException("Can not found a valid corresponding symbol before:'" +
                     closure.expression() + "'");
@@ -164,7 +167,7 @@ public class AbstractSyntaxTreeLoader {
         }
 
         // if closure is brace('{' or '}'), treat it as segment of a number of occurrence operator.
-        if (closure instanceof Closure.Brace) {
+        if (FactorTypeRegister.instanceOf(closure.type(), FactorTypeRegister.BRACE_MASK)) {
             if (!closure.left()) {
                 throw new RuntimeException("Can not found a valid corresponding symbol before:'" +
                     closure.expression() + "'");
@@ -191,7 +194,7 @@ public class AbstractSyntaxTreeLoader {
 
         Factor prev = stack.pop();
 
-        if (!prev.isOperand()) {
+        if (!FactorTypeRegister.isOperand(prev)) {
             // syntax error
             throw new RuntimeException("The factor before closure:'" + closure.expression() + "' is " +
                 prev.expression());
@@ -231,8 +234,8 @@ public class AbstractSyntaxTreeLoader {
         Factor thirdToLast = stack.pop();
 
         // left-operand operator right-operand
-        if (!last.isOperand() || !thirdToLast.isOperand() || !secondToLast.isOperator() ||
-            precedence > ((Operator) secondToLast).precedence() )
+        if (!FactorTypeRegister.isOperand(last) || !FactorTypeRegister.isOperand(thirdToLast) ||
+            !FactorTypeRegister.isOperator(secondToLast) || precedence > ((Operator) secondToLast).precedence() )
         {
             stack.push(thirdToLast);
             stack.push(secondToLast);
@@ -312,7 +315,9 @@ public class AbstractSyntaxTreeLoader {
                 return times;
             }
 
-            if (factor.isOperand() && factor instanceof CharacterAtom) {
+            if (FactorTypeRegister.isOperand(factor) &&
+                FactorTypeRegister.instanceOf(factor.type(), FactorTypeRegister.CHARACTER_ATOM))
+            {
                 CharacterAtom operand = (CharacterAtom) factor;
                 fragments.add(operand);
                 int character = operand.character();
@@ -443,7 +448,9 @@ public class AbstractSyntaxTreeLoader {
                 return result;
             }
 
-            if (factor.isOperand() && factor instanceof CharacterAtom) {
+            if (FactorTypeRegister.isOperand(factor) &&
+                FactorTypeRegister.instanceOf(factor.type(), FactorTypeRegister.CHARACTER_ATOM))
+            {
                 fragments.add((CharacterAtom) factor);
                 return null;
             }

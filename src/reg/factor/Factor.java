@@ -10,23 +10,7 @@ public interface Factor {
     String expression();
 
     /**
-     * @return true is factor is operator
+     * @return the type of the instance. type reference {@link FactorTypeRegister}
      */
-    default boolean isOperator() {
-        return false;
-    }
-
-    /**
-     * @return true is factor is operand
-     */
-    default boolean isOperand() {
-        return false;
-    }
-
-    /**
-     * @return true is factor is closure， left or right。
-     */
-    default boolean isClosure() {
-        return false;
-    }
+    int type();
 }

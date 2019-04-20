@@ -1,6 +1,7 @@
 package reg.factor.operand;
 
 import reg.Character;
+import reg.factor.FactorTypeRegister;
 
 /**
  * Single character operand
@@ -28,6 +29,11 @@ public class CharacterAtom implements Operand {
     @Override
     public String expression() {
         return Character.convertToLetter(c);
+    }
+
+    @Override
+    public int type() {
+        return FactorTypeRegister.CHARACTER_ATOM;
     }
 
     /**

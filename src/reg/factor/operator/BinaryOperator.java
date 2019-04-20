@@ -1,5 +1,7 @@
 package reg.factor.operator;
 
+import reg.factor.FactorTypeRegister;
+
 /**
  * binary operator.
  *
@@ -37,6 +39,11 @@ public abstract class BinaryOperator implements Operator {
         }
 
         @Override
+        public int type() {
+            return FactorTypeRegister.CONNECT;
+        }
+
+        @Override
         public int precedence() {
             return 15;
         }
@@ -55,6 +62,11 @@ public abstract class BinaryOperator implements Operator {
         @Override
         public String expression() {
             return "|";
+        }
+
+        @Override
+        public int type() {
+            return FactorTypeRegister.OR;
         }
 
         @Override

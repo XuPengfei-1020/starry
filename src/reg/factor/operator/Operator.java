@@ -7,11 +7,6 @@ import reg.factor.Factor;
  * @author flying
  */
 public interface Operator extends Factor {
-    @Override
-    default boolean isOperator() {
-        return true;
-    }
-
     /**
      * the operator is associative?
      */

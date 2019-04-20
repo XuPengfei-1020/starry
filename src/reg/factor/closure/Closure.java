@@ -1,11 +1,23 @@
 package reg.factor.closure;
 
 import reg.factor.Factor;
+import reg.factor.FactorTypeRegister;
 
 /**
  * Closure, (, ), [, ], {, }
  */
 public abstract class Closure implements Factor {
+    /**
+     * follows is singleton instance.
+     */
+    public static final Parenthesis LEFT_PARENTHESIS = new Parenthesis(true);
+    public static final Parenthesis RIGHT_PARENTHESIS = new Parenthesis(false);
+    public static final Brace LEFT_BRACE = new Brace(true);
+    public static final Brace RIGHT_BRACE = new Brace(false);
+    public static final Bracket LEFT_BRACKET = new Bracket(true);
+    public static final Bracket RIGHT_BRACKET = new Bracket(false);
+    public static final AntiBracket ANTI_BRACKET = new AntiBracket();
+
     /**
      * left or right
      */
@@ -16,11 +28,6 @@ public abstract class Closure implements Factor {
      * @return
      */
     public abstract String corresponding();
-
-    @Override
-    public boolean isClosure() {
-        return true;
-    }
 
     /**
      * check if gavin corresponding is valid.
@@ -55,13 +62,18 @@ public abstract class Closure implements Factor {
         /**
          * Constructor
          */
-        public Parenthesis(boolean left) {
+        private Parenthesis(boolean left) {
             super(left);
         }
 
         @Override
         public String expression() {
             return left() ? LEFT : RIGHT;
+        }
+
+        @Override
+        public int type() {
+            return left() ?  FactorTypeRegister.LEFT_PARENTHESIS : FactorTypeRegister.RIGHT_PARENTHESIS;
         }
 
         @Override
@@ -80,13 +92,18 @@ public abstract class Closure implements Factor {
         /**
          * Constructor
          */
-        public Bracket(boolean left) {
+        private Bracket(boolean left) {
             super(left);
         }
 
         @Override
         public String expression() {
             return left() ? LEFT : RIGHT;
+        }
+
+        @Override
+        public int type() {
+            return left() ?  FactorTypeRegister.LEFT_BRACKET : FactorTypeRegister.RIGHT_BRACKET;
         }
 
         @Override
@@ -109,18 +126,22 @@ public abstract class Closure implements Factor {
      */
     public static class AntiBracket extends Bracket {
         public static String LEFT = "[^";
-        public static String RIGHT = "]";
 
         /**
          * Constructor
          */
-        public AntiBracket() {
+        private AntiBracket() {
             super(true);
         }
 
         @Override
         public String expression() {
             return LEFT;
+        }
+
+        @Override
+        public int type() {
+            return left() ?  FactorTypeRegister.ANTI_BRACKET : FactorTypeRegister.RIGHT_BRACKET;
         }
 
         @Override
@@ -144,13 +165,18 @@ public abstract class Closure implements Factor {
         /**
          * Constructor
          */
-        public Brace(boolean left) {
+        private Brace(boolean left) {
             super(left);
         }
 
         @Override
         public String expression() {
             return left() ? LEFT : RIGHT;
+        }
+
+        @Override
+        public int type() {
+            return left() ?  FactorTypeRegister.LEFT_BRACE : FactorTypeRegister.RIGHT_BRACE;
         }
 
         @Override

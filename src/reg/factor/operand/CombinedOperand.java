@@ -1,5 +1,6 @@
 package reg.factor.operand;
 
+import reg.factor.FactorTypeRegister;
 import reg.factor.closure.Closure;
 import reg.factor.operator.Operator;
 
@@ -74,6 +75,11 @@ public class CombinedOperand implements Operand {
                 (operator == null ? "" : operator.expression()) +
                 (rightOperand == null ? "" : rightOperand.expression()) +
                 (rightClosure == null ? "" : rightClosure.expression());
+    }
+
+    @Override
+    public int type() {
+        return FactorTypeRegister.COMBINED_OPERAND;
     }
 
     /**

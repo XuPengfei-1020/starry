@@ -6,9 +6,9 @@ package reg.factor.operand;
  */
 public class UnicodeAtom extends CharacterAtom {
     /**
-     * unicode 字符串
+     * unicode
      */
-    private int value;
+    private String unicode;
 
     /**
      * Constructor
@@ -17,5 +17,15 @@ public class UnicodeAtom extends CharacterAtom {
     public UnicodeAtom(String unicode) {
         // todo, convert unicode to int
         super(Integer.parseInt(unicode));
+        this.unicode = unicode;
+    }
+
+    @Override
+    public String expression() {
+        return getUnicode();
+    }
+
+    public String getUnicode() {
+        return unicode;
     }
 }

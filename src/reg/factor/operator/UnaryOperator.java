@@ -1,5 +1,7 @@
 package reg.factor.operator;
 
+import reg.factor.FactorTypeRegister;
+
 public abstract class UnaryOperator implements Operator {
     /**
      *  start operator， singleton
@@ -48,7 +50,14 @@ public abstract class UnaryOperator implements Operator {
         public NumOfOccurrence(int n, int m) {
             this.n = n;
             this.m = m;
-            valid();
+
+            if (n > m) {
+                throw new RuntimeException("min: " + n + " is grate than max: " + m);
+            }
+
+            if (n < 0) {
+                throw new RuntimeException("times setting can not lower than zero");
+            }
         }
 
         /**
@@ -59,22 +68,14 @@ public abstract class UnaryOperator implements Operator {
             this(n, Integer.MAX_VALUE);
         }
 
-        /**
-         * if setting is valid.
-         */
-        private void valid() {
-            if (n > m) {
-                throw new RuntimeException("min: " + n + " is grate than max: " + m);
-            }
-
-            if (n < 0) {
-                throw new RuntimeException("times setting can not lower than zero");
-            }
-        }
-
         @Override
         public String expression() {
             return "{" + n + ", " + (m == Integer.MAX_VALUE ? "" : m ) + "}";
+        }
+
+        @Override
+        public int type() {
+            return FactorTypeRegister.NUM_OF_OCCURRENCE;
         }
     }
 
@@ -92,6 +93,11 @@ public abstract class UnaryOperator implements Operator {
         public String expression() {
             return "*";
         }
+
+        @Override
+        public int type() {
+            return FactorTypeRegister.STAR;
+        }
     }
 
     /**
@@ -108,6 +114,11 @@ public abstract class UnaryOperator implements Operator {
         public String expression() {
             return "+";
         }
+
+        @Override
+        public int type() {
+            return FactorTypeRegister.AT_LAST_ONCE;
+        }
     }
 
     /**
@@ -123,6 +134,11 @@ public abstract class UnaryOperator implements Operator {
         @Override
         public String expression() {
             return "?";
+        }
+
+        @Override
+        public int type() {
+            return FactorTypeRegister.AT_MOST_ONCE;
         }
     }
 }

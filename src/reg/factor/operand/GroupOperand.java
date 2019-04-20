@@ -1,5 +1,6 @@
 package reg.factor.operand;
 
+import reg.factor.FactorTypeRegister;
 import reg.factor.closure.Closure;
 
 /**
@@ -76,21 +77,6 @@ public class GroupOperand implements Operand {
     }
 
     @Override
-    public boolean isOperator() {
-        return false;
-    }
-
-    @Override
-    public boolean isOperand() {
-        return true;
-    }
-
-    @Override
-    public boolean isClosure() {
-        return false;
-    }
-
-    @Override
     public String expression() {
         StringBuilder expression = new StringBuilder();
         expression.append(antiMode ? Closure.AntiBracket.LEFT : Closure.Bracket.LEFT);
@@ -105,6 +91,11 @@ public class GroupOperand implements Operand {
 
         expression.append(Closure.Bracket.RIGHT);
         return expression.toString();
+    }
+
+    @Override
+    public int type() {
+        return FactorTypeRegister.GROUP_OPERAND;
     }
 
     public boolean isAntiMode() {

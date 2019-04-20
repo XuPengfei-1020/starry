@@ -19,7 +19,7 @@ public class RegToAbstractSyntax {
             loader.receive(factor);
         }
 
-        //In fact, loader is a abstract syntax.
+        //In fact, loader is a abstract syntax tree.
         System.out.println();
         System.out.println(loader.rootOfAbstractSyntaxTree().expression());
     }

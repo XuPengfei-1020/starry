@@ -32,7 +32,7 @@ public class CharacterAtom implements Operand {
     }
 
     @Override
-    public int type() {
+    public short type() {
         return FactorTypeRegister.CHARACTER_ATOM;
     }
 

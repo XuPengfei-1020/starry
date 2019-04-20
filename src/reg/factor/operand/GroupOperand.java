@@ -94,7 +94,7 @@ public class GroupOperand implements Operand {
     }
 
     @Override
-    public int type() {
+    public short type() {
         return FactorTypeRegister.GROUP_OPERAND;
     }
 

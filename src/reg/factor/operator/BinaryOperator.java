@@ -39,7 +39,7 @@ public abstract class BinaryOperator implements Operator {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return FactorTypeRegister.CONNECT;
         }
 
@@ -65,7 +65,7 @@ public abstract class BinaryOperator implements Operator {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return FactorTypeRegister.OR;
         }
 

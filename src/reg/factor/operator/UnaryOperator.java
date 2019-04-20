@@ -74,7 +74,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return FactorTypeRegister.NUM_OF_OCCURRENCE;
         }
     }
@@ -95,7 +95,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return FactorTypeRegister.STAR;
         }
     }
@@ -116,7 +116,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return FactorTypeRegister.AT_LAST_ONCE;
         }
     }
@@ -137,7 +137,7 @@ public abstract class UnaryOperator implements Operator {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return FactorTypeRegister.AT_MOST_ONCE;
         }
     }

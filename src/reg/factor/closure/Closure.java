@@ -72,7 +72,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return left() ?  FactorTypeRegister.LEFT_PARENTHESIS : FactorTypeRegister.RIGHT_PARENTHESIS;
         }
 
@@ -102,7 +102,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return left() ?  FactorTypeRegister.LEFT_BRACKET : FactorTypeRegister.RIGHT_BRACKET;
         }
 
@@ -140,7 +140,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return left() ?  FactorTypeRegister.ANTI_BRACKET : FactorTypeRegister.RIGHT_BRACKET;
         }
 
@@ -175,7 +175,7 @@ public abstract class Closure implements Factor {
         }
 
         @Override
-        public int type() {
+        public short type() {
             return left() ?  FactorTypeRegister.LEFT_BRACE : FactorTypeRegister.RIGHT_BRACE;
         }
 

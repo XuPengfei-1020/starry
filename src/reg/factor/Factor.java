@@ -12,5 +12,5 @@ public interface Factor {
     /**
      * @return the type of the instance. type reference {@link FactorTypeRegister}
      */
-    int type();
+    short type();
 }

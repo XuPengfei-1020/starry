@@ -78,7 +78,7 @@ public class CombinedOperand implements Operand {
     }
 
     @Override
-    public int type() {
+    public short type() {
         return FactorTypeRegister.COMBINED_OPERAND;
     }
 

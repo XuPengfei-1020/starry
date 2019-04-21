@@ -44,7 +44,7 @@ public abstract class BinaryOperator implements Operator {
         }
 
         @Override
-        public int precedence() {
+        public byte precedence() {
             return 15;
         }
     }
@@ -70,7 +70,7 @@ public abstract class BinaryOperator implements Operator {
         }
 
         @Override
-        public int precedence() {
+        public byte precedence() {
             return 20;
         }
     }

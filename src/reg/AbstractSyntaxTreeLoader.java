@@ -89,7 +89,7 @@ public class AbstractSyntaxTreeLoader {
             throw new Exception("uncompleted number of occurrence operator:'" + timesOpAssembler.received() + "'");
         }
 
-        collapse(-1);
+        collapse((byte)-1);
         Factor factor = stack.peek();
 
         if (FactorTypeRegister.isOperand(factor)) {
@@ -178,7 +178,7 @@ public class AbstractSyntaxTreeLoader {
         }
 
         // try collapsing the factor has received before.
-        collapse(-1);
+        collapse((byte)-1);
 
         if (closure.left()) {
             // be the start symbol of a sub-expression
@@ -224,7 +224,7 @@ public class AbstractSyntaxTreeLoader {
      * and prev-of-prev operand.
      * @return true means some prev factors had been combined.
      */
-    private boolean collapse(int precedence) throws Exception {
+    private boolean collapse(byte precedence) throws Exception {
         if (stack.size() < 3) {
             return false;
         }
@@ -258,7 +258,7 @@ public class AbstractSyntaxTreeLoader {
         /**
          * separator of min times and max times in a number of occurrence operator.
          */
-        private static final int TIMES_SEPARATOR = ',';
+        private static final short TIMES_SEPARATOR = (short) ',';
 
         /**
          * true means assembler has received a '{'.
@@ -320,7 +320,7 @@ public class AbstractSyntaxTreeLoader {
             {
                 CharacterAtom operand = (CharacterAtom) factor;
                 fragments.add(operand);
-                int character = operand.character();
+                short character = operand.character();
 
                 if (character == TIMES_SEPARATOR) {
                     if (hasReceivedTimeSeparator) {

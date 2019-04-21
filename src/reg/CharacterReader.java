@@ -40,12 +40,12 @@ public class CharacterReader {
      * 读取下一个字符，重复调用会导致指针后移。
      * @return 下一个字符。
      */
-    public int next() {
+    public short next() {
         if (index >= expression.length()) {
             return Character.EOF;
         }
 
-        int c = expression.charAt(index++);
+        short c = (short) expression.charAt(index++);
 
         if (c == '\\') {
             if (index >= expression.length()) {
@@ -59,7 +59,7 @@ public class CharacterReader {
             }
 
             // 转义字符,再读取一个.
-            return Character.convertEscape(expression.charAt(index++));
+            return Character.convertEscape((short) expression.charAt(index++));
         }
 
         if (c == '[' && index < expression.length() && expression.charAt(index) == '^') {
@@ -76,14 +76,14 @@ public class CharacterReader {
      * @param n n 大于0，并且包含当前字符
      * @return 首个字符是当前指针指向的字符
      */
-    public int[] explore(int n) {
+    public short[] explore(short n) {
         if (index >= expression.length()) {
-            return new int[] {};
+            return new short[] {};
         }
 
         // 记住原来的 index
         int oldIndex = index;
-        int[] result = new int[n];
+        short[] result = new short[n];
 
         while (n-- > 0) {
             result[result.length - n - 1] = next();

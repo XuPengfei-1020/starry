@@ -15,5 +15,5 @@ public interface Operator extends Factor {
     /**
      * @return precedence of this operator
      */
-    int precedence();
+    byte precedence();
 }

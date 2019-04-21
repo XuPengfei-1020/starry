@@ -16,7 +16,7 @@ public class UnicodeAtom extends CharacterAtom {
      */
     public UnicodeAtom(String unicode) {
         // todo, convert unicode to int
-        super(Integer.parseInt(unicode));
+        super(Short.parseShort(unicode));
         this.unicode = unicode;
     }
 

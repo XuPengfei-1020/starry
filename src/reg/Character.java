@@ -120,7 +120,7 @@ public class Character {
     /**
      * Convert character to expression
      */
-    public static String convertToLetter(int character) {
+    public static String convertToLetter(short character) {
         switch (character) {
             case NEW_LINE_ESCAPE:
                 return "\\n";
@@ -142,7 +142,7 @@ public class Character {
     /**
      * 转换转义字符
      */
-    public static int convertEscape(int c) {
+    public static short convertEscape(short c) {
         switch (c) {
             case 'n':
                 return NEW_LINE_ESCAPE;
@@ -164,7 +164,7 @@ public class Character {
     /**
      * 转换转义字符
      */
-    public static int specilize(int c) {
+    public static short specilize(short c) {
         switch (c) {
             case '.':
                 return DOT;

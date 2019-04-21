@@ -24,7 +24,7 @@ public abstract class UnaryOperator implements Operator {
     }
 
     @Override
-    public int precedence() {
+    public byte precedence() {
         return 10;
     }
 

@@ -10,7 +10,7 @@ public class CharacterAtom implements Operand {
     /**
      * Value of character， maybe a special character. see {@link Character}
      */
-    private final int c;
+    private final short c;
 
     /**
      * true means the character is a special character, such as 'S' 's' '.' ...
@@ -21,7 +21,7 @@ public class CharacterAtom implements Operand {
      * Constructor
      * @param c
      */
-    public CharacterAtom(int c) {
+    public CharacterAtom(short c) {
         this.c = c;
         speicial = c < Character.SPECIAL_CHAR_START && c > Character.SPECIAL_CHAR_END;
     }
@@ -47,7 +47,7 @@ public class CharacterAtom implements Operand {
     /**
      * @return value of character.
      */
-    public int character() {
+    public short character() {
         return c;
     }
 }

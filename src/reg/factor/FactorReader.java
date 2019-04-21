@@ -41,7 +41,7 @@ public class FactorReader {
             return null;
         }
 
-        int character = reader.next();
+        short character = reader.next();
 
         if (character == Character.LEFT_PARENTHESIS || character == Character.RIGHT_PARENTHESIS) {
             return character == Character.LEFT_PARENTHESIS ? Closure.LEFT_PARENTHESIS : Closure.RIGHT_PARENTHESIS;

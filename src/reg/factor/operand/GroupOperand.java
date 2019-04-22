@@ -111,7 +111,7 @@ public abstract class GroupOperand implements Operand {
 
         @Override
         public short type() {
-            return FactorTypeRegister.RANGE_GROUP_OPERAND;
+            return FactorTypeRegister.GROUP_OPERAND;
         }
 
         @Override

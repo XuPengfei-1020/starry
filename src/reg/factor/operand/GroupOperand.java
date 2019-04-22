@@ -9,108 +9,126 @@ import reg.factor.closure.Closure;
  *
  * @author flying
  */
-public class GroupOperand implements Operand {
-    /**
-     * Separator for range.
-     */
-    public static final char RANGE_SEPARATOR = '-';
-
+public abstract class GroupOperand implements Operand {
     /** ture means format is [^...], false is [...]**/
-    private boolean antiMode;
+    protected boolean antiMode;
 
     /**
-     * members of this group, a set of character.
-     * conflicts witch {@link #from} {@link #to}
+     * @return true means this group is anti mode.
      */
-    private CharacterAtom[] members;
-
-    /**
-     * Min limit for range, if this group is a range of a set of characters.
-     * range is conflicts with {@link #members}.
-     */
-    private CharacterAtom from;
-
-    /**
-     * Max limit for range, if this group is a range of a set of characters.
-     * range is conflicts with {@link #members}.
-     */
-    private CharacterAtom to;
-
-    /**
-     * Constructor
-     * @param anti true means group is anti mode.
-     * @param members members of this group, a set of character.
-     */
-    public GroupOperand(boolean anti, CharacterAtom[] members) {
-        this.antiMode = anti;
-
-        if (members == null || members.length ==0) {
-            throw new RuntimeException("Members is empty!");
-        }
-
-        this.members = members;
-    }
-
-    /**
-     * Constructor
-     * @param anti true means group is anti mode.
-     * @param from Min limit for range.
-     * @param to Max limit for range.
-     */
-    public GroupOperand(boolean anti, CharacterAtom from, CharacterAtom to) {
-        this.antiMode = anti;
-
-        if (from == null || to == null) {
-            throw new RuntimeException("The limit for range should be start of end with a certain character");
-        }
-
-        if (from.special() || to.special()) {
-            throw new RuntimeException("The limit for range should be start or end with a common character");
-        }
-
-        if (from.character() >= to.character()) {
-            throw new RuntimeException("Range is invalid in logical, min is:" +  from.character() + ", max is:" + to.character());
-        }
-
-        this.from = from;
-        this.to = to;
-    }
-
-    @Override
-    public String expression() {
-        StringBuilder expression = new StringBuilder();
-        expression.append(antiMode ? Closure.AntiBracket.LEFT : Closure.Bracket.LEFT);
-
-        if (members != null) {
-            for (CharacterAtom members : members) {
-                expression.append(members.expression());
-            }
-        } else {
-            expression.append(from.expression()).append(RANGE_SEPARATOR).append(to.expression());
-        }
-
-        expression.append(Closure.Bracket.RIGHT);
-        return expression.toString();
-    }
-
-    @Override
-    public short type() {
-        return FactorTypeRegister.GROUP_OPERAND;
-    }
-
     public boolean isAntiMode() {
         return antiMode;
     }
 
-    public CharacterAtom[] getMembers() {
-        return members;
+    /**
+     * Group witch members can
+     */
+    public static class PartitionGroup extends GroupOperand {
+        /**
+         * Separator for range.
+         */
+        public static final char RANGE_SEPARATOR = '-';
+
+        /**
+         * Min limit for range, if this group is a range of a set of characters.
+         */
+        private CharacterAtom from;
+
+        /**
+         * Max limit for range, if this group is a range of a set of characters.
+         */
+        private CharacterAtom to;
+
+        /**
+         * Constructor
+         * @param from Min limit for range.
+         * @param to Max limit for range.
+         */
+        public PartitionGroup(CharacterAtom from, CharacterAtom to, boolean antiMode) {
+            this.antiMode = antiMode;
+
+            if (from == null || to == null) {
+                throw new RuntimeException("The limit for range should be start of end with a certain character");
+            }
+
+            if (from.special() || to.special()) {
+                throw new RuntimeException("The limit for range should be start or end with a common character");
+            }
+
+            if (from.character() >= to.character()) {
+                throw new RuntimeException("Range is invalid in logical, min is:" +  from.character() + ", max is:" + to.character());
+            }
+
+            this.from = from;
+            this.to = to;
+        }
+
+        @Override
+        public short type() {
+            return FactorTypeRegister.RANGE_GROUP_OPERAND;
+        }
+
+        @Override
+        public String expression() {
+            StringBuilder expression = new StringBuilder();
+            expression.append(antiMode ? Closure.AntiBracket.LEFT : Closure.Bracket.LEFT);
+            expression.append(from.expression()).append(RANGE_SEPARATOR).append(to.expression());
+            expression.append(Closure.Bracket.RIGHT);
+            return expression.toString();
+        }
+
+        public short from() {
+            return from.character();
+        }
+
+        public short to() {
+            return to.character();
+        }
     }
 
-    public CharacterAtom getFrom() {
-        return from;
-    }
+    /**
+     * Group witch members are not presented by a single partition.
+     */
+    public static class HashGroup extends GroupOperand {
+        /**
+         * members of this group, a set of character.
+         */
+        private CharacterAtom[] members;
 
-    public CharacterAtom getTo() {
-        return to;
+        /**
+         * Constructor
+         * @param members members of this group, a set of character.
+         */
+        public HashGroup(CharacterAtom[] members, boolean antiMode) {
+            this.antiMode = antiMode;
+
+            if (members == null || members.length ==0) {
+                throw new RuntimeException("Members is empty!");
+            }
+
+            this.members = members;
+        }
+
+        @Override
+        public short type() {
+            return FactorTypeRegister.RANGE_GROUP_OPERAND;
+        }
+
+        @Override
+        public String expression() {
+            StringBuilder expression = new StringBuilder();
+            expression.append(antiMode ? Closure.AntiBracket.LEFT : Closure.Bracket.LEFT);
+
+            for (CharacterAtom members : members) {
+                expression.append(members.expression());
+            }
+
+            expression.append(Closure.Bracket.RIGHT);
+            return expression.toString();
+        }
+
+        public CharacterAtom[] getMembers() {
+            return members;
+        }
     }
 }

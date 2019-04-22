@@ -428,22 +428,23 @@ public class AbstractSyntaxTreeLoader {
 
             if (Closure.Bracket.RIGHT.equals(factor.expression())) {
                 // construct group
-                if (fragments.size() == 3 && GroupOperand.RANGE_SEPARATOR == fragments.get(1).character()) {
+                if (fragments.size() == 3 && GroupOperand.PartitionGroup.RANGE_SEPARATOR == fragments.get(1).character()) {
                     // is range
-                    CharacterAtom min = fragments.get(1);
-                    CharacterAtom max = fragments.get(3);
+                    CharacterAtom min = fragments.get(0);
+                    CharacterAtom max = fragments.get(2);
 
                     if (min.special() || max.special()) {
                         throw new RuntimeException("The group '" + received() + "' is invalid, limit of range must be" +
                             " common character. ");
                     }
 
-                    GroupOperand result = new GroupOperand(antiMode, min, max);
+                    GroupOperand result = new GroupOperand.PartitionGroup(min, max, antiMode);
                     reset();
                     return result;
                 }
 
-                GroupOperand result = new GroupOperand(antiMode, fragments.toArray(new CharacterAtom[fragments.size()]));
+                GroupOperand result =
+                    new GroupOperand.HashGroup(fragments.toArray(new CharacterAtom[fragments.size()]), antiMode);
                 reset();
                 return result;
             }

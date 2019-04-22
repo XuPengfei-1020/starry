@@ -42,6 +42,7 @@ public class FactorTypeRegister {
     public static final short CHARACTER_ATOM = OPERAND_MASK | 1  & TYPE;
     public static final short COMBINED_OPERAND = OPERAND_MASK | 2 & TYPE;
     public static final short GROUP_OPERAND = OPERAND_MASK | 3 & TYPE;
+    public static final short RANGE_GROUP_OPERAND = OPERAND_MASK | 4 & TYPE;
 
     /**
      * The follows is mask for LEFT_CLOSURE and RIGHT_CLOSURE

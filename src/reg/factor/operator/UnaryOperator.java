@@ -58,6 +58,10 @@ public abstract class UnaryOperator implements Operator {
             if (n < 0) {
                 throw new RuntimeException("times setting can not lower than zero");
             }
+
+            if (m == 0 && n == 0) {
+                throw new RuntimeException("times setting can not both are zero");
+            }
         }
 
         /**
@@ -76,6 +80,14 @@ public abstract class UnaryOperator implements Operator {
         @Override
         public short type() {
             return FactorTypeRegister.NUM_OF_OCCURRENCE;
+        }
+
+        public int n() {
+            return n;
+        }
+
+        public int m() {
+            return m;
         }
     }
 

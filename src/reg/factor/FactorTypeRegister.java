@@ -10,7 +10,7 @@ public class FactorTypeRegister {
      * The follows is mask for OPERATOR, OPERAND and CLOSURE.
      */
     private static final short MASK = -0x8000; // -2 ^ 15
-    private static final short TYPE = 0x7FFF; // 2 ^ 15 - 1
+    private static final short TYPE = 0x7fff; // 2 ^ 15 - 1
 
     public static final short OPERATOR_MASK = 0x4000 | MASK; // 2 ^ 14 | MASK
     public static final short OPERAND_MASK = 0x2000 | MASK; // 2 ^ 13 | MASK
@@ -25,24 +25,24 @@ public class FactorTypeRegister {
     /**
      * The follows is type for START, AT_LAST_ONCE, AT_MOST_ONCE, NUM_OF_OCCURRENCE.
      */
-    public static final short STAR = UNARY_OPERATOR_MASK | 1 & TYPE;
-    public static final short AT_LAST_ONCE = UNARY_OPERATOR_MASK | 2 & TYPE;
-    public static final short AT_MOST_ONCE = UNARY_OPERATOR_MASK | 3 & TYPE;
-    public static final short NUM_OF_OCCURRENCE = UNARY_OPERATOR_MASK | 4 & TYPE;
+    public static final short STAR = (UNARY_OPERATOR_MASK | 1) & TYPE;
+    public static final short AT_LAST_ONCE = (UNARY_OPERATOR_MASK | 2) & TYPE;
+    public static final short AT_MOST_ONCE = (UNARY_OPERATOR_MASK | 3) & TYPE;
+    public static final short NUM_OF_OCCURRENCE = (UNARY_OPERATOR_MASK | 4) & TYPE;
 
     /**
      * The follows is type for OR and CONNECT
      */
-    public static final short OR = BINARY_OPERATOR_MASK | 1  & TYPE;
-    public static final short CONNECT = BINARY_OPERATOR_MASK | 2 & TYPE;
+    public static final short OR = (BINARY_OPERATOR_MASK | 1) & TYPE;
+    public static final short CONNECT = (BINARY_OPERATOR_MASK | 2) & TYPE;
 
     /**
      * The follows is type for CHARACTER_ATOM , COMBINED_OPERAND and GROUP_OPERAND
      */
-    public static final short CHARACTER_ATOM = OPERAND_MASK | 1  & TYPE;
-    public static final short COMBINED_OPERAND = OPERAND_MASK | 2 & TYPE;
-    public static final short GROUP_OPERAND = OPERAND_MASK | 3 & TYPE;
-    public static final short RANGE_GROUP_OPERAND = OPERAND_MASK | 4 & TYPE;
+    public static final short CHARACTER_ATOM = (OPERAND_MASK | 1) & TYPE;
+    public static final short COMBINED_OPERAND = (OPERAND_MASK | 2) & TYPE;
+    public static final short GROUP_OPERAND = (OPERAND_MASK | 3) & TYPE;
+    public static final short RANGE_GROUP_OPERAND = (OPERAND_MASK | 4) & TYPE;
 
     /**
      * The follows is mask for LEFT_CLOSURE and RIGHT_CLOSURE
@@ -61,13 +61,13 @@ public class FactorTypeRegister {
     /**
      * The follows is type for ANTI_BRACKET, BRACKET, BRACE, PARENTHESIS, left or right.
      */
-    public static final short ANTI_BRACKET = LEFT_CLOSURE_MASK | ANTI_BRACKET_MASK & TYPE;
-    public static final short LEFT_BRACKET = LEFT_CLOSURE_MASK | BRACKET_MASK & TYPE;
-    public static final short RIGHT_BRACKET = RIGHT_CLOSURE_MASK | BRACKET_MASK & TYPE;
-    public static final short LEFT_BRACE = LEFT_CLOSURE_MASK | BRACE_MASK & TYPE;
-    public static final short RIGHT_BRACE = RIGHT_CLOSURE_MASK | BRACE_MASK & TYPE;
-    public static final short LEFT_PARENTHESIS = LEFT_CLOSURE_MASK | PARENTHESIS_MASK & TYPE;
-    public static final short RIGHT_PARENTHESIS = RIGHT_CLOSURE_MASK | PARENTHESIS_MASK & TYPE;
+    public static final short ANTI_BRACKET = (LEFT_CLOSURE_MASK | ANTI_BRACKET_MASK) & TYPE;
+    public static final short LEFT_BRACKET = (LEFT_CLOSURE_MASK | BRACKET_MASK) & TYPE;
+    public static final short RIGHT_BRACKET = (RIGHT_CLOSURE_MASK | BRACKET_MASK) & TYPE;
+    public static final short LEFT_BRACE = (LEFT_CLOSURE_MASK | BRACE_MASK) & TYPE;
+    public static final short RIGHT_BRACE = (RIGHT_CLOSURE_MASK | BRACE_MASK) & TYPE;
+    public static final short LEFT_PARENTHESIS = (LEFT_CLOSURE_MASK | PARENTHESIS_MASK) & TYPE;
+    public static final short RIGHT_PARENTHESIS = (RIGHT_CLOSURE_MASK | PARENTHESIS_MASK) & TYPE;
 
     /**
      * @param a type of a gavin type.
@@ -79,7 +79,7 @@ public class FactorTypeRegister {
             return true;
         }
 
-        return ((b | TYPE) == TYPE) ? (a == b) : (((a | MASK) & b) == b);
+        return ((b & TYPE) == b) ? (a == b) : (((a | MASK) & b) == b);
     }
 
     /**

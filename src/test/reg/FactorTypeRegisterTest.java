@@ -1,4 +1,4 @@
-package reg.test;
+package test.reg;
 
 import reg.factor.FactorTypeRegister;
 
@@ -19,7 +19,7 @@ public class FactorTypeRegisterTest {
         check(FactorTypeRegister.instanceOf(FactorTypeRegister.OR, FactorTypeRegister.BINARY_OPERATOR_MASK));
         check(FactorTypeRegister.instanceOf(FactorTypeRegister.STAR, FactorTypeRegister.UNARY_OPERATOR_MASK));
 
-
+        check(!FactorTypeRegister.instanceOf(FactorTypeRegister.GROUP_OPERAND, FactorTypeRegister.CHARACTER_ATOM));
         check(!FactorTypeRegister.instanceOf(FactorTypeRegister.OR, FactorTypeRegister.OPERAND_MASK));
         check(!FactorTypeRegister.instanceOf(FactorTypeRegister.CONNECT, FactorTypeRegister.OR));
         check(!FactorTypeRegister.instanceOf(FactorTypeRegister.AT_LAST_ONCE, FactorTypeRegister.OPERAND_MASK));

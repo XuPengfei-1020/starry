@@ -1,4 +1,4 @@
-package reg.test;
+package test.reg;
 
 import reg.AbstractSyntaxTreeLoader;
 import reg.CharacterReader;

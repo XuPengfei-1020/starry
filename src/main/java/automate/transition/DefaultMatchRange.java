@@ -59,9 +59,9 @@ public class DefaultMatchRange implements MatchRange {
     @Override
     public String toString() {
         if (from == to) {
-            return String.valueOf(from);
+            return (char)from + "(" + from + ")";
         }
 
-        return '[' + from + " - " + to + "]";
+        return "[" + (char) from + "(" + from + ") - " + (char) to + "(" + to + ")]";
     }
 }

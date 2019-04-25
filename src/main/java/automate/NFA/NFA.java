@@ -1,7 +1,7 @@
 package automate.NFA;
 
 import automate.FinteAutomate;
-import automate.state.nfa.NFAState;
+import automate.state.NFAState;
 import automate.state.State;
 import automate.transition.DefaultMatchRange;
 import automate.transition.EpsilonTranstion;
@@ -100,10 +100,14 @@ public class NFA implements FinteAutomate {
 
             if (FactorTypeRegister.instanceOf(operator.type(), FactorTypeRegister.CONNECT) ) {
                 // connect operator, combined accept of left and start of right.
-                if (left.accept == null || right.start == null) {
-                    System.out.printf("null");
+                // combined left.accept and right.start if left.accept has no out-path and right.start has no in-path,
+                // or insert a ε-transition into them, and connect them.
+                if (!left.accept.nexts().isEmpty() && !right.start.prevs().isEmpty()) {
+                    left.accept.connect(new EpsilonTranstion(), right.start);
+                } else {
+                    left.accept.combine(right.start);
                 }
-                left.accept.combine(right.start);
+
                 this.start = left.start;
                 this.accept = right.accept;
                 return;

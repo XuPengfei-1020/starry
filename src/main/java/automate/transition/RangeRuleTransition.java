@@ -13,7 +13,7 @@ public class RangeRuleTransition implements Transition<RangeRuleTransition> {
     /**
      * true means match will failed if gavin character in the any range of this's.
      */
-    private boolean exculdeMode = false;
+    private boolean excludeMode = false;
 
     /**
      * Constructor
@@ -31,11 +31,11 @@ public class RangeRuleTransition implements Transition<RangeRuleTransition> {
     /**
      * Constructor
      * @param range range range of character that can be accepted.
-     * @param exculdeMode true means match will failed if gavin character in the any range of this's.
+     * @param excludeMode true means match will failed if gavin character in the any range of this's.
      */
-    public RangeRuleTransition(MatchRange range, boolean exculdeMode) {
+    public RangeRuleTransition(MatchRange range, boolean excludeMode) {
         this(range);
-        this.exculdeMode = exculdeMode;
+        this.excludeMode = excludeMode;
     }
 
     /**
@@ -53,32 +53,34 @@ public class RangeRuleTransition implements Transition<RangeRuleTransition> {
     /**
      * Constructor
      * @param ranges of character that can be accepted.
-     * @param exculdeMode true means match will failed if gavin character in the any range of this's.
+     * @param excludeMode true means match will failed if gavin character in the any range of this's.
      */
-    public RangeRuleTransition(MatchRange[] ranges, boolean exculdeMode) {
+    public RangeRuleTransition(MatchRange[] ranges, boolean excludeMode) {
         this(ranges);
-        this.exculdeMode = exculdeMode;
+        this.excludeMode = excludeMode;
     }
 
     @Override
     public boolean match(short c) {
         for (MatchRange range : matchRanges) {
             if (range.from() <= c && range.to() >= c) {
-                return !exculdeMode;
+                return !excludeMode;
             }
         }
 
-        return exculdeMode;
+        return excludeMode;
     }
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
+        result.append(excludeMode ? "[^" : "");
 
         for (MatchRange range: matchRanges) {
             result.append(range).append(",");
         }
 
+        result.append(excludeMode ? "]" : "");
         return result.toString();
     }
 }

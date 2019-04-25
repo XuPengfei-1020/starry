@@ -1,6 +1,5 @@
 package automate.state;
 
-import automate.state.nfa.NFAState;
 import automate.transition.Transition;
 
 import java.util.Collection;
@@ -13,11 +12,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * Abstract state.
  * @author flying
  */
-public abstract class AbstractState<T extends AbstractState> implements State<T> {
+public abstract class AbstractState implements State {
     /**
      * create id for every state.
      */
-    private static final AtomicLong idCreator = new AtomicLong(Long.MIN_VALUE);
+    private static final AtomicLong idCreator = new AtomicLong(0);
 
     /** members **/
     protected long id;
@@ -101,7 +100,7 @@ public abstract class AbstractState<T extends AbstractState> implements State<T>
             prev.connect(transition, this);
         }
 
-        Map<Transition, State> nexts = state.prevs();
+        Map<Transition, State> nexts = state.nexts();
 
         for (Map.Entry<Transition, State> entry : nexts.entrySet()) {
             State next = entry.getValue();

@@ -51,17 +51,17 @@ public class FactorTypeRegister {
     public static final short RIGHT_CLOSURE_MASK = CLOSURE_MASK | 0x0400; // CLOSURE_MASK | 2 ^ 10
 
     /**
-     * The follows is mask for ANTI_BRACKET, BRACKET, BRACE, PARENTHESIS
+     * The follows is mask for EXCLUDE_BRACKET, BRACKET, BRACE, PARENTHESIS
      */
-    public static final short ANTI_BRACKET_MASK = CLOSURE_MASK | 0x0200; //CLOSURE_MASK | 2 ^ 9
+    public static final short EXCLUDE_BRACKET_MASK = CLOSURE_MASK | 0x0200; //CLOSURE_MASK | 2 ^ 9
     public static final short BRACKET_MASK = CLOSURE_MASK | 0x0100; //CLOSURE_MASK | 2 ^ 8
     public static final short BRACE_MASK = CLOSURE_MASK | 0x0080; //CLOSURE_MASK | 2 ^ 7
     public static final short PARENTHESIS_MASK = CLOSURE_MASK | 0x0040; //CLOSURE_MASK | 2 ^ 6
 
     /**
-     * The follows is type for ANTI_BRACKET, BRACKET, BRACE, PARENTHESIS, left or right.
+     * The follows is type for EXCLUDE_BRACKET, BRACKET, BRACE, PARENTHESIS, left or right.
      */
-    public static final short ANTI_BRACKET = (LEFT_CLOSURE_MASK | ANTI_BRACKET_MASK) & TYPE;
+    public static final short EXCLUDE_BRACKET = (LEFT_CLOSURE_MASK | EXCLUDE_BRACKET_MASK) & TYPE;
     public static final short LEFT_BRACKET = (LEFT_CLOSURE_MASK | BRACKET_MASK) & TYPE;
     public static final short RIGHT_BRACKET = (RIGHT_CLOSURE_MASK | BRACKET_MASK) & TYPE;
     public static final short LEFT_BRACE = (LEFT_CLOSURE_MASK | BRACE_MASK) & TYPE;

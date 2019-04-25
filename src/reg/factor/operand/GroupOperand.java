@@ -10,14 +10,14 @@ import reg.factor.closure.Closure;
  * @author flying
  */
 public abstract class GroupOperand implements Operand {
-    /** ture means format is [^...], false is [...]**/
-    protected boolean antiMode;
+    /** true means format is [^...], false is [...]**/
+    protected boolean excludeMode;
 
     /**
-     * @return true means this group is anti mode.
+     * @return true means this group is exclude mode.
      */
-    public boolean isAntiMode() {
-        return antiMode;
+    public boolean isExcludeMode() {
+        return excludeMode;
     }
 
     /**
@@ -44,8 +44,8 @@ public abstract class GroupOperand implements Operand {
          * @param from Min limit for range.
          * @param to Max limit for range.
          */
-        public PartitionGroup(CharacterAtom from, CharacterAtom to, boolean antiMode) {
-            this.antiMode = antiMode;
+        public PartitionGroup(CharacterAtom from, CharacterAtom to, boolean excludeMode) {
+            this.excludeMode = excludeMode;
 
             if (from == null || to == null) {
                 throw new RuntimeException("The limit for range should be start of end with a certain character");
@@ -71,7 +71,7 @@ public abstract class GroupOperand implements Operand {
         @Override
         public String expression() {
             StringBuilder expression = new StringBuilder();
-            expression.append(antiMode ? Closure.AntiBracket.LEFT : Closure.Bracket.LEFT);
+            expression.append(excludeMode ? Closure.ExcludeBracket.LEFT : Closure.Bracket.LEFT);
             expression.append(from.expression()).append(RANGE_SEPARATOR).append(to.expression());
             expression.append(Closure.Bracket.RIGHT);
             return expression.toString();
@@ -99,8 +99,8 @@ public abstract class GroupOperand implements Operand {
          * Constructor
          * @param members members of this group, a set of character.
          */
-        public HashGroup(CharacterAtom[] members, boolean antiMode) {
-            this.antiMode = antiMode;
+        public HashGroup(CharacterAtom[] members, boolean excludeMode) {
+            this.excludeMode = excludeMode;
 
             if (members == null || members.length ==0) {
                 throw new RuntimeException("Members is empty!");
@@ -117,7 +117,7 @@ public abstract class GroupOperand implements Operand {
         @Override
         public String expression() {
             StringBuilder expression = new StringBuilder();
-            expression.append(antiMode ? Closure.AntiBracket.LEFT : Closure.Bracket.LEFT);
+            expression.append(excludeMode ? Closure.ExcludeBracket.LEFT : Closure.Bracket.LEFT);
 
             for (CharacterAtom members : members) {
                 expression.append(members.expression());

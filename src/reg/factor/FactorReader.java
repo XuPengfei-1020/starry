@@ -55,8 +55,8 @@ public class FactorReader {
             return character == Character.LEFT_BRACE ? Closure.LEFT_BRACE : Closure.RIGHT_BRACE;
         }
 
-        if (character == Character.ANTI_GROUP_START) {
-            return Closure.ANTI_BRACKET;
+        if (character == Character.EXCLUDE_GROUP_START) {
+            return Closure.EXCLUDE_BRACKET;
         }
 
         if (character == Character.AT_LAST_ONCE) {

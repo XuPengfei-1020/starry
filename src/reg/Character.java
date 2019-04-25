@@ -36,7 +36,7 @@ public class Character {
     /**
      * [^
      */
-    public static final short ANTI_GROUP_START = -106;
+    public static final short EXCLUDE_GROUP_START = -106;
 
     /**
      * [

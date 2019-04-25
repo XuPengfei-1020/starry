@@ -16,7 +16,7 @@ public abstract class Closure implements Factor {
     public static final Brace RIGHT_BRACE = new Brace(false);
     public static final Bracket LEFT_BRACKET = new Bracket(true);
     public static final Bracket RIGHT_BRACKET = new Bracket(false);
-    public static final AntiBracket ANTI_BRACKET = new AntiBracket();
+    public static final ExcludeBracket EXCLUDE_BRACKET = new ExcludeBracket();
 
     /**
      * left or right
@@ -117,20 +117,20 @@ public abstract class Closure implements Factor {
                 return true;
             }
 
-            return corresponding != null && !left() && corresponding.getClass() == AntiBracket.class;
+            return corresponding != null && !left() && corresponding.getClass() == ExcludeBracket.class;
         }
     }
 
     /**
      * [^
      */
-    public static class AntiBracket extends Bracket {
+    public static class ExcludeBracket extends Bracket {
         public static String LEFT = "[^";
 
         /**
          * Constructor
          */
-        private AntiBracket() {
+        private ExcludeBracket() {
             super(true);
         }
 
@@ -141,7 +141,7 @@ public abstract class Closure implements Factor {
 
         @Override
         public short type() {
-            return left() ?  FactorTypeRegister.ANTI_BRACKET : FactorTypeRegister.RIGHT_BRACKET;
+            return left() ?  FactorTypeRegister.EXCLUDE_BRACKET : FactorTypeRegister.RIGHT_BRACKET;
         }
 
         @Override

@@ -155,7 +155,7 @@ public class AbstractSyntaxTreeLoader {
     private void receiveClosure(Closure closure) throws Exception {
         // if closure is bracket('[', '[^' or ']'), treat it as segment of a number of occurrence operator.
         if (FactorTypeRegister.instanceOf(closure.type(), FactorTypeRegister.BRACKET_MASK) ||
-            FactorTypeRegister.instanceOf(closure.type(), FactorTypeRegister.ANTI_BRACKET_MASK))
+            FactorTypeRegister.instanceOf(closure.type(), FactorTypeRegister.EXCLUDE_BRACKET_MASK))
         {
             if (!closure.left()) {
                 throw new RuntimeException("Can not found a valid corresponding symbol before:'" +
@@ -391,9 +391,9 @@ public class AbstractSyntaxTreeLoader {
      */
     private static class GroupOperandAssembler {
         /**
-         * true means group is anti-mode.
+         * true means group is exclude-mode.
          */
-        private Boolean antiMode = null;
+        private Boolean excludeMode = null;
 
         /**
          * register, used to remember sequence fragments assembler has received.
@@ -415,14 +415,14 @@ public class AbstractSyntaxTreeLoader {
             }
 
             if (Closure.Bracket.LEFT.equals(factor.expression()) ||
-                Closure.AntiBracket.LEFT.equals(factor.expression()))
+                Closure.ExcludeBracket.LEFT.equals(factor.expression()))
             {
-                if (antiMode != null) {
+                if (excludeMode != null) {
                     throw new RuntimeException("Character '" + factor.expression() + "' is offend after :'" +
                         received() + "'");
                 }
 
-                antiMode = Closure.AntiBracket.LEFT.equals(factor.expression());
+                excludeMode = Closure.ExcludeBracket.LEFT.equals(factor.expression());
                 return null;
             }
 
@@ -438,13 +438,13 @@ public class AbstractSyntaxTreeLoader {
                             " common character. ");
                     }
 
-                    GroupOperand result = new GroupOperand.PartitionGroup(min, max, antiMode);
+                    GroupOperand result = new GroupOperand.PartitionGroup(min, max, excludeMode);
                     reset();
                     return result;
                 }
 
                 GroupOperand result =
-                    new GroupOperand.HashGroup(fragments.toArray(new CharacterAtom[fragments.size()]), antiMode);
+                    new GroupOperand.HashGroup(fragments.toArray(new CharacterAtom[fragments.size()]), excludeMode);
                 reset();
                 return result;
             }
@@ -463,18 +463,18 @@ public class AbstractSyntaxTreeLoader {
          * @return true means the assembler in incompletely.
          */
         public boolean uncompleted() {
-            return antiMode != null;
+            return excludeMode != null;
         }
 
         /**
          * String of factors assembler has received.
          */
         public String received() {
-            if (antiMode == null) {
+            if (excludeMode == null) {
                 return "";
             }
 
-            StringBuilder result = new StringBuilder(antiMode ? Closure.AntiBracket.LEFT : Closure.Bracket.LEFT);
+            StringBuilder result = new StringBuilder(excludeMode ? Closure.ExcludeBracket.LEFT : Closure.Bracket.LEFT);
 
             for (Factor factor : fragments) {
                 result.append(factor.expression());
@@ -488,7 +488,7 @@ public class AbstractSyntaxTreeLoader {
          */
         private void reset() {
             fragments.clear();
-            antiMode = null;
+            excludeMode = null;
         }
     }
 }

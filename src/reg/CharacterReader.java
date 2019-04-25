@@ -64,7 +64,7 @@ public class CharacterReader {
 
         if (c == '[' && index < expression.length() && expression.charAt(index) == '^') {
             index ++;
-            return Character.ANTI_GROUP_START;
+            return Character.EXCLUDE_GROUP_START;
         }
 
         // 尝试对 c 进行 specialize

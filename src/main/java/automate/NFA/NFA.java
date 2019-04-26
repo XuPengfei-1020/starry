@@ -42,6 +42,7 @@ public class NFA implements FinteAutomate {
             NFAState start = new NFAState();
             NFAState accept = new NFAState();
             short character = ((CharacterAtom)operand).character();
+            // @todo, handle the special character lake . S ...
             start.connect(new RangeRuleTransition(new DefaultMatchRange(character, character)), accept);
             this.start = start;
             this.accept = accept;
@@ -59,6 +60,7 @@ public class NFA implements FinteAutomate {
             DefaultMatchRange[] matchRanges = new DefaultMatchRange[members.length];
 
             // @todo, do sth work to improve performance.
+            // @todo, handle the special character lake . S ...
             for (int i = 0; i < members.length; i++) {
                 matchRanges[i] = new DefaultMatchRange(members[i].character(), members[i].character());
             }
@@ -195,7 +197,35 @@ public class NFA implements FinteAutomate {
 
     @Override
     public boolean match(String text) {
-        return false;
+        if (text == null) {
+            return false;
+        }
+
+        HashSet<State> oldStates = new HashSet<>();
+        HashSet<State> newStates = new HashSet<>();
+        addState(this.start, oldStates);
+
+        for (char c : text.toCharArray()) {
+            for (State current: oldStates) {
+                for (State next :  current.transfer((short) c)) {
+                    if (!newStates.contains(next)) {
+                        addState(next, newStates);
+                    }
+                }
+            }
+
+            // swap old and new.
+            if (newStates.isEmpty()) {
+                return false;
+            }
+
+            HashSet<State> temp = oldStates;
+            oldStates = newStates;
+            temp.clear();
+            newStates = temp;
+        }
+
+        return oldStates.contains(this.accept);
     }
 
     /**
@@ -249,5 +279,24 @@ public class NFA implements FinteAutomate {
         }
 
         return new CombinedOperand(newLeft, BinaryOperator.CONNECT, newRight);
+    }
+
+    /**
+     * add state specify by the first param
+     * and a set of states which each can be arrived by ε-transition from the gavin state to the set specify by
+     * send param.
+     * @param s gavin state
+     * @param newStates the set
+     */
+    private void addState(State s, HashSet<State> newStates) {
+        newStates.add(s);
+
+        if (s instanceof NFAState) {
+            for (State next : ((NFAState) s).nextEpsilonState()) {
+                if (!newStates.contains(next)) {
+                    addState(next, newStates);
+                }
+            }
+        }
     }
 }

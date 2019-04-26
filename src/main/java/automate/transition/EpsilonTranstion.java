@@ -11,7 +11,7 @@ public class EpsilonTranstion implements Transition<EpsilonTranstion> {
      */
     @Override
     public boolean match(short c) {
-        return true;
+        return false;
     }
 
     @Override

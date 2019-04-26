@@ -12,7 +12,7 @@ public interface State {
     /**
      * id of state
      */
-    long id();
+    int id();
 
     /**
      * Connect to a state
@@ -33,11 +33,6 @@ public interface State {
      * @return next states that can move to from this state by the gavin char.
      */
     Collection<State> transfer(short c);
-
-    /**
-     * @return the next state which can be arrived by  gavin transition: {@param t} .
-     */
-    State next(Transition t);
 
     /**
      * @return all pairs of transitions and states which each state can arrive this by the corresponding transition

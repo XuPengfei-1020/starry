@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Abstract state.
@@ -16,10 +16,10 @@ public abstract class AbstractState implements State {
     /**
      * create id for every state.
      */
-    private static final AtomicLong idCreator = new AtomicLong(0);
+    private static final AtomicInteger idCreator = new AtomicInteger(0);
 
     /** members **/
-    protected long id;
+    protected int id;
 
     /**
      * All state connected with this and each is the next state of this.
@@ -39,7 +39,7 @@ public abstract class AbstractState implements State {
     }
 
     @Override
-    public long id() {
+    public int id() {
         return id;
     }
 
@@ -72,11 +72,6 @@ public abstract class AbstractState implements State {
         }
 
         return result;
-    }
-
-    @Override
-    public State next(Transition t) {
-        return nexts.get(t);
     }
 
     @Override

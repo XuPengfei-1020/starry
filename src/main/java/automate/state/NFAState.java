@@ -11,9 +11,28 @@ import java.util.*;
  */
 public class NFAState extends AbstractState {
     /**
-     * Empty set, unmodifiable.
+     * Combine the gavin state to this. all transitions linked to gavin state will redirect to this.
+     * all transitions extending from the gavin state will linked to this as the extending transition.
+     * @param state gavin state, will be not modified
      */
-    Set<State> empty = Collections.EMPTY_SET;
+    public void combine(State state) {
+        Map<Transition, State> prevs = new HashMap<>(state.prevs());
+
+        for (Map.Entry<Transition, State> entry : prevs.entrySet()) {
+            State prev = entry.getValue();
+            Transition transition = entry.getKey();
+            prev.disconnect(transition, state);
+            prev.connect(transition, this);
+        }
+
+        Map<Transition, State> nexts = state.nexts();
+
+        for (Map.Entry<Transition, State> entry : nexts.entrySet()) {
+            State next = entry.getValue();
+            Transition transition = entry.getKey();
+            connect(transition, next);
+        }
+    }
 
     /**
      * @return the all states which can be arrived by ε-transition from this.

@@ -29,7 +29,13 @@ public interface State {
     void disconnect(Transition transition, State state);
 
     /**
-     * @param c, a range of character.
+     * @param from, to, a range of character.
+     * @return next states that can move to from this state by the gavin char range.
+     */
+    Collection<State> transfer(short from, short to);
+
+    /**
+     * @param c, a character.
      * @return next states that can move to from this state by the gavin char.
      */
     Collection<State> transfer(short c);
@@ -45,11 +51,4 @@ public interface State {
      *  and the states is all the next state for this.
      */
     Map<Transition, State> nexts();
-
-    /**
-     * Combine the gavin state to this. all transitions linked to gavin state will redirect to this.
-     * all transitions extending from the gavin state will linked to this as the extending transition.
-     * @param state gavin state, will be not modified
-     */
-    void combine(State state);
 }

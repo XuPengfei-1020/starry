@@ -32,16 +32,6 @@ public class DefaultMatchRange implements MatchRange {
     }
 
     @Override
-    public boolean seamlessWith(MatchRange range) {
-        return false;
-    }
-
-    @Override
-    public MatchRange concat(MatchRange range) {
-        return null;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof DefaultMatchRange)) {
             return false;

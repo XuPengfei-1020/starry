@@ -1,14 +1,17 @@
 package automate.transition;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 /**
  * Transition with contains single or multiple {@link MatchRange}.
  * {@link #matchRanges} means ranges of character that can be accepted.
  * @todo make a cache pool to avoid create to much instance.
  * @author fling
  */
-public class RangeRuleTransition implements Transition<RangeRuleTransition> {
+public class RangeRuleTransition implements Transition {
     /** ranges ranges of character that can be accepted. **/
-    private MatchRange[] matchRanges;
+    private Collection<MatchRange> matchRanges = new HashSet<>();
 
     /**
      * true means match will failed if gavin character in the any range of this's.
@@ -24,8 +27,7 @@ public class RangeRuleTransition implements Transition<RangeRuleTransition> {
             throw new RuntimeException("param: 'range' is null");
         }
 
-        this.matchRanges = new MatchRange[1];
-        matchRanges[0] = range;
+        matchRanges.add(range);
     }
 
     /**
@@ -47,7 +49,9 @@ public class RangeRuleTransition implements Transition<RangeRuleTransition> {
             throw new RuntimeException("param: 'ranges' is null");
         }
 
-        this.matchRanges = ranges;
+        for (MatchRange range : ranges) {
+            this.matchRanges.add(range);
+        }
     }
 
     /**
@@ -62,13 +66,23 @@ public class RangeRuleTransition implements Transition<RangeRuleTransition> {
 
     @Override
     public boolean match(short c) {
+        return match(c, c);
+    }
+
+    @Override
+    public boolean match(short from, short to) {
         for (MatchRange range : matchRanges) {
-            if (range.from() <= c && range.to() >= c) {
+            if (range.from() >= from && range.to() <= to) {
                 return !excludeMode;
             }
         }
 
         return excludeMode;
+    }
+
+    @Override
+    public Collection<MatchRange> matchRanges() {
+        return matchRanges;
     }
 
     @Override

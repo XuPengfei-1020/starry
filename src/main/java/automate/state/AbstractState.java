@@ -2,10 +2,7 @@ package automate.state;
 
 import automate.transition.Transition;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -46,27 +43,26 @@ public abstract class AbstractState implements State {
     @Override
     public void connect(Transition transition, State state) {
         nexts.put(transition, state);
-
-        if (state instanceof NFAState) {
-            ((NFAState) state).prevs.put(transition, this);
-        }
+        state.prevs().put(transition, this);
     }
 
     @Override
     public void disconnect(Transition transition, State state) {
         nexts.remove(transition, state);
-
-        if (state instanceof NFAState) {
-            ((NFAState) state).prevs.remove(transition, this);
-        }
+        state.prevs().remove(transition, this);
     }
 
     @Override
     public Collection<State> transfer(short c) {
+        return transfer(c, c);
+    }
+
+    @Override
+    public Collection<State> transfer(short from, short to) {
         HashSet<State> result = new HashSet<>();
 
         for (Map.Entry<Transition, State> entry : nexts.entrySet()) {
-            if (entry.getKey().match(c)) {
+            if (entry.getKey().match(from, to)) {
                 result.add(entry.getValue());
             }
         }
@@ -82,25 +78,5 @@ public abstract class AbstractState implements State {
     @Override
     public  Map<Transition, State>  prevs() {
         return prevs;
-    }
-
-    @Override
-    public void combine(State state) {
-        Map<Transition, State> prevs = new HashMap<>(state.prevs());
-
-        for (Map.Entry<Transition, State> entry : prevs.entrySet()) {
-            State prev = entry.getValue();
-            Transition transition = entry.getKey();
-            prev.disconnect(transition, state);
-            prev.connect(transition, this);
-        }
-
-        Map<Transition, State> nexts = state.nexts();
-
-        for (Map.Entry<Transition, State> entry : nexts.entrySet()) {
-            State next = entry.getValue();
-            Transition transition = entry.getKey();
-            connect(transition, next);
-        }
     }
 }

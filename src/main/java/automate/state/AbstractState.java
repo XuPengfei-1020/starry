@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Abstract state.
  * @author flying
  */
-public abstract class AbstractState implements State {
+public abstract class AbstractState<T extends State> implements State<T> {
     /**
      * create id for every state.
      */
@@ -21,12 +21,12 @@ public abstract class AbstractState implements State {
     /**
      * All state connected with this and each is the next state of this.
      */
-    protected HashMap<Transition, State> nexts = new HashMap<>();
+    protected HashMap<Transition, T> nexts = new HashMap<>();
 
     /**
      * All state connected with this and each is the prev state of this.
      */
-    protected HashMap<Transition, State> prevs = new HashMap<>();
+    protected HashMap<Transition, T> prevs = new HashMap<>();
 
     /**
      * Constructor
@@ -41,7 +41,7 @@ public abstract class AbstractState implements State {
     }
 
     @Override
-    public void connect(Transition transition, State state) {
+    public void connect(Transition transition, T state) {
         nexts.put(transition, state);
         state.prevs().put(transition, this);
     }
@@ -53,15 +53,15 @@ public abstract class AbstractState implements State {
     }
 
     @Override
-    public Collection<State> transfer(short c) {
+    public Collection<T> transfer(short c) {
         return transfer(c, c);
     }
 
     @Override
-    public Collection<State> transfer(short from, short to) {
-        HashSet<State> result = new HashSet<>();
+    public Collection<T> transfer(short from, short to) {
+        HashSet<T> result = new HashSet<>();
 
-        for (Map.Entry<Transition, State> entry : nexts.entrySet()) {
+        for (Map.Entry<Transition, T> entry : nexts.entrySet()) {
             if (entry.getKey().match(from, to)) {
                 result.add(entry.getValue());
             }
@@ -71,12 +71,12 @@ public abstract class AbstractState implements State {
     }
 
     @Override
-    public Map<Transition, State> nexts() {
+    public Map<Transition, T> nexts() {
         return nexts;
     }
 
     @Override
-    public  Map<Transition, State>  prevs() {
+    public  Map<Transition, T>  prevs() {
         return prevs;
     }
 }

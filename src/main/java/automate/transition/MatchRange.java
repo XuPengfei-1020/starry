@@ -18,4 +18,9 @@ public interface MatchRange {
      * right border of range
      */
     short to();
+
+    /**
+     * @return range, index of 0 is left, and index of 1 is  right.
+     */
+    short[] range();
 }

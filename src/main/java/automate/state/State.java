@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * state in automate.
  */
-public interface State {
+public interface State<T extends State> {
     /**
      * id of state
      */
@@ -19,36 +19,36 @@ public interface State {
      * @param transition the transition witch connect this state and the gavin state.
      * @param state
      */
-    void connect(Transition transition, State state);
+    void connect(Transition transition, T state);
 
     /**
      * Disconnect with a state.
      * @param transition the transition witch connected with this state and the gavin state.
      * @param state
      */
-    void disconnect(Transition transition, State state);
+    void disconnect(Transition transition, T state);
 
     /**
      * @param from, to, a range of character.
      * @return next states that can move to from this state by the gavin char range.
      */
-    Collection<State> transfer(short from, short to);
+    Collection<T> transfer(short from, short to);
 
     /**
      * @param c, a character.
      * @return next states that can move to from this state by the gavin char.
      */
-    Collection<State> transfer(short c);
+    Collection<T> transfer(short c);
 
     /**
      * @return all pairs of transitions and states which each state can arrive this by the corresponding transition
      * and the states is all the previous state for this.
      */
-    Map<Transition, State> prevs();
+    Map<Transition, T> prevs();
 
     /**
      * @return all pairs of transitions and states which each state can be arrived by the corresponding transition
      *  and the states is all the next state for this.
      */
-    Map<Transition, State> nexts();
+    Map<Transition, T> nexts();
 }

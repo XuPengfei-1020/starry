@@ -9,13 +9,13 @@ import java.util.*;
  * Abstract state.
  * @author flying
  */
-public class NFAState extends AbstractState {
+public class NFAState extends AbstractState<NFAState> {
     /**
      * Combine the gavin state to this. all transitions linked to gavin state will redirect to this.
      * all transitions extending from the gavin state will linked to this as the extending transition.
      * @param state gavin state, will be not modified
      */
-    public void combine(State state) {
+    public void combine(NFAState state) {
         Map<Transition, State> prevs = new HashMap<>(state.prevs());
 
         for (Map.Entry<Transition, State> entry : prevs.entrySet()) {
@@ -25,10 +25,10 @@ public class NFAState extends AbstractState {
             prev.connect(transition, this);
         }
 
-        Map<Transition, State> nexts = state.nexts();
+        Map<Transition, NFAState> nexts = state.nexts();
 
-        for (Map.Entry<Transition, State> entry : nexts.entrySet()) {
-            State next = entry.getValue();
+        for (Map.Entry<Transition, NFAState> entry : nexts.entrySet()) {
+            NFAState next = entry.getValue();
             Transition transition = entry.getKey();
             connect(transition, next);
         }
@@ -37,11 +37,11 @@ public class NFAState extends AbstractState {
     /**
      * @return the all states which can be arrived by ε-transition from this.
      */
-    public Collection<State> nextEpsilonState() {
+    public Collection<NFAState> nextEpsilonState() {
         // todo, optimized.
-        Set<State> hashSet = new HashSet<>();
+        Set<NFAState> hashSet = new HashSet<>();
 
-        for (Map.Entry<Transition, State> entry : this.nexts().entrySet()) {
+        for (Map.Entry<Transition, NFAState> entry : this.nexts().entrySet()) {
             if (entry.getKey() instanceof EpsilonTranstion) {
                 hashSet.add(entry.getValue());
             }

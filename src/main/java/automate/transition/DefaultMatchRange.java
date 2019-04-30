@@ -32,6 +32,11 @@ public class DefaultMatchRange implements MatchRange {
     }
 
     @Override
+    public short[] range() {
+        return new short[] {from, to};
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof DefaultMatchRange)) {
             return false;

@@ -201,13 +201,13 @@ public class NFA implements FinteAutomate {
             return false;
         }
 
-        HashSet<State> oldStates = new HashSet<>();
-        HashSet<State> newStates = new HashSet<>();
+        HashSet<NFAState> oldStates = new HashSet<>();
+        HashSet<NFAState> newStates = new HashSet<>();
         addState(this.start, oldStates);
 
         for (char c : text.toCharArray()) {
             for (State current: oldStates) {
-                for (State next :  current.transfer((short) c)) {
+                for (NFAState next : (Collection<NFAState>)current.transfer((short) c)) {
                     if (!newStates.contains(next)) {
                         addState(next, newStates);
                     }
@@ -219,7 +219,7 @@ public class NFA implements FinteAutomate {
                 return false;
             }
 
-            HashSet<State> temp = oldStates;
+            HashSet<NFAState> temp = oldStates;
             oldStates = newStates;
             temp.clear();
             newStates = temp;
@@ -288,14 +288,12 @@ public class NFA implements FinteAutomate {
      * @param s gavin state
      * @param newStates the set
      */
-    private void addState(State s, HashSet<State> newStates) {
+    private void addState(NFAState s, HashSet<NFAState> newStates) {
         newStates.add(s);
 
-        if (s instanceof NFAState) {
-            for (State next : ((NFAState) s).nextEpsilonState()) {
-                if (!newStates.contains(next)) {
-                    addState(next, newStates);
-                }
+        for (NFAState next : s.nextEpsilonState()) {
+            if (!newStates.contains(next)) {
+                addState(next, newStates);
             }
         }
     }

@@ -1,20 +1,20 @@
-package test.automate;
+package automate;
 
+import automate.DFA.DFA;
 import automate.NFA.NFA;
-import automate.ui.DrawAutoMate;
+import org.junit.Test;
 import reg.AbstractSyntaxTreeLoader;
 import reg.CharacterReader;
 import reg.factor.Factor;
 import reg.factor.FactorReader;
 import reg.factor.operand.Operand;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
-public class TestConvertNFA {
-    public static void main(String[] args) throws Exception {
+public class TestConvertNFA_DFA {
+    @Test
+    public void test() throws Exception {
         String expression = "a|b*c?d+(ef)+(g|h)*[^abc][a-z]{0,2}fa{0,}b{,3}h{2,5}";
         // expression = "a|b*c?d+";
         CharacterReader reader = new CharacterReader(expression);
@@ -35,7 +35,7 @@ public class TestConvertNFA {
         testReg();
     }
 
-    private static void testReg() throws Exception {
+    private void testReg() throws Exception {
         HashMap<String, String[]> regAndText = new HashMap<>();
         // single
         regAndText.put("abc", new String[]{"abc"});
@@ -83,12 +83,10 @@ public class TestConvertNFA {
         regAndText.put("a|(bc)", new String[] {"a", "bc"});
         regAndText.put("a|([^abc])", new String[] {"a", "e", "f"});
         regAndText.put("a|(efc)*", new String[] {"a", "efc", "efcefc"});
-        regAndText.put("a|(efc)*d", new String[] {"ad", "efcd", "efcefcd"});
+        regAndText.put("a|(efc)*d", new String[] {"ad", "efcd", "efcefcd", "d"});
 
         for (Map.Entry<String, String[]> entry : regAndText.entrySet()) {
-            if (!matchReg(entry.getKey(), entry.getValue())) {
-                throw new RuntimeException("test fail:" + entry.getKey());
-            }
+            matchReg(entry.getKey(), entry.getValue(), true);
         }
 
         // test incorrect
@@ -98,7 +96,7 @@ public class TestConvertNFA {
         regAndText.put("abc", new String[]{"abcd", "a", "c", "b", "wr"});
         // group
         regAndText.put("[abc]", new String[]{"d", "e", "f"});
-        regAndText.put("[^abc]", new String[]{"e", "b", "c"});
+        regAndText.put("[^abc]", new String[]{"a", "b", "c", "ab", "ac", "bc", ""});
 
         // +
         regAndText.put("a+b+c+",new String[] {"a", "b", "c", "ab", "ac", "bbb", "aaa", "ccc", "e", "d", "f"});
@@ -116,8 +114,8 @@ public class TestConvertNFA {
         // *
         regAndText.put("a*b*c*", new String[] {"w", "e", "r", "cba", "ca", "ba", "bca", "aabbcca", "aacccca", "bbcca", "cccccccccccccca"});
         regAndText.put("a*",new String[] {"b", "aaaaaaaaaaaaaab"});
-        regAndText.put("[abc]*", new String[] {"abce", "be", "ce", "", "eabcbcaabc", "cbecbaa", "bcceccbbbba"});
-        regAndText.put("[^abc]*", new String[] {"a", "b", "c", "", "edfaedfe", "dfebfef", "ewrcqwerqwerqwrsf"});
+        regAndText.put("[abc]*", new String[] {"abce", "be", "ce", "eabcbcaabc", "cbecbaa", "bcceccbbbba"});
+        regAndText.put("[^abc]*", new String[] {"a", "b", "c", "edfaedfe", "dfebfef", "ewrcqwerqwerqwrsf"});
 
         // |
         regAndText.put("a|b", new String[] {"c", "e"});
@@ -125,7 +123,7 @@ public class TestConvertNFA {
         regAndText.put("a|[abc]", new String[] {"ab", "bc", "e", "f"});
         regAndText.put("a|[^abc]", new String[] {"b", "c", "ef", "dd"});
         regAndText.put("a|b|c|d", new String[] {"e", "f", "g", "h", ""});
-        regAndText.put("a|b|(de)|d", new String[] {"f", "g", "de", "dea", "e"});
+        regAndText.put("a|b|(de)|d", new String[] {"f", "g", "ded", "dea", "e"});
 
         // connect
         regAndText.put("ab", new String[] {"abc", "", "a", "b"});
@@ -142,13 +140,26 @@ public class TestConvertNFA {
         regAndText.put("a|(efc)*d", new String[] {"aed", "aefd", "aefcd"});
 
         for (Map.Entry<String, String[]> entry : regAndText.entrySet()) {
-            if (matchReg(entry.getKey(), entry.getValue())) {
-                throw new RuntimeException("test fail:" + entry.getKey());
+            matchReg(entry.getKey(), entry.getValue(), false);
+        }
+    }
+
+    private void matchReg(String reg, String[] text, boolean expect) throws Exception {
+        NFA nfa = buildNFA(reg);
+        DFA dfa = new DFA(nfa);
+
+        for (String t : text) {
+            if(nfa.match(t) != expect) {
+                throw new RuntimeException("NFA test failed: reg:" + reg + ", text:'" + t + "', expect:" + expect);
+            }
+
+            if(dfa.match(t) != expect) {
+                throw new RuntimeException("DFA test failed: reg:" + reg + ", text:'" + t + "', expect:" + expect);
             }
         }
     }
 
-    private static boolean matchReg(String reg, String[] text) throws Exception {
+    private NFA buildNFA(String reg) throws Exception {
         FactorReader factorReader = new FactorReader(new CharacterReader(reg));
         AbstractSyntaxTreeLoader loader = new AbstractSyntaxTreeLoader();
 
@@ -156,14 +167,6 @@ public class TestConvertNFA {
             loader.receive(factorReader.next());
         }
 
-        NFA nfa = new NFA(loader.rootOfAbstractSyntaxTree());
-
-        for (String t : text) {
-            if (!nfa.match(t)) {
-                return false;
-            }
-        }
-
-        return true;
+        return new NFA(loader.rootOfAbstractSyntaxTree());
     }
 }
